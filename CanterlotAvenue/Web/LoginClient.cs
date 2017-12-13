@@ -46,11 +46,17 @@ namespace CanterlotAvenue.Web
             this.CookieWebClient = c;
         }
 
+        /// <summary>
+        /// Logs the user into Poniverse/CanterlotAvenue
+        /// </summary>
         public PoniverseUser Login(string user, string pass, bool remember = false)
         {
             return Login(user, pass, remember, this.CookieWebClient);
         }
 
+        /// <summary>
+        /// Retrieves the Poniverse OAuth token
+        /// </summary>
         public static string GetToken(CookieAwareWebClient c = null)
         {
             if(c == null)
@@ -62,6 +68,9 @@ namespace CanterlotAvenue.Web
             return m.Groups[1].ToString();
         }
 
+        /// <summary>
+        /// Extracts the User data from Ponivere's JS variable
+        /// </summary>
         public static string ExtractUser(string html)
         {
             Regex r = new Regex(@"poniverse\.user = (.+);");
@@ -77,6 +86,9 @@ namespace CanterlotAvenue.Web
             }
         }
 
+        /// <summary>
+        /// Extracts the Poniverse special OAuth URL from the CanterlotAvenue PonAuth HTML
+        /// </summary>
         private static string ExtractPoniverseOauth(string ponauth_html)
         {
             Regex r = new Regex("window\\.location\\.replace\\(\\\"(.+)\\\"\\);");
@@ -92,6 +104,9 @@ namespace CanterlotAvenue.Web
             }
         }
 
+        /// <summary>
+        /// Gets the Auth Data to pass to Poniverse for proper login
+        /// </summary>
         private static AuthData GetAuthData(CookieAwareWebClient c = null)
         {
             string url = "http://canterlotavenue.com/ponauth/";
@@ -108,12 +123,18 @@ namespace CanterlotAvenue.Web
             return d;
         }
 
+        /// <summary>
+        /// Logins into PonAuth, only works if the WebClient has valid Poniverse cookies
+        /// </summary>
         private static void LoginPonauth(string poniverse_oauth, CookieAwareWebClient c = null)
         {
             string url = GetPonauthUrl(poniverse_oauth, c);
             SendPonauthUrl(url, c);
         }
 
+        /// <summary>
+        /// Gets the Ponauth special login URL from the Poniverse response
+        /// </summary>
         private static string GetPonauthUrl(string poniverse_oauth, CookieAwareWebClient c = null)
         {
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(poniverse_oauth);
@@ -133,6 +154,9 @@ namespace CanterlotAvenue.Web
             }
         }
 
+        /// <summary>
+        /// Gets redirection from PonAuth, not used
+        /// </summary>
         private static void SendPonauthUrl(string url, CookieAwareWebClient c)
         {
 
@@ -149,6 +173,9 @@ namespace CanterlotAvenue.Web
             }
         }
 
+        /// <summary>
+        /// Logs the user in CanterlotAvenue
+        /// </summary>
         public static PoniverseUser Login(string user, string pass, bool remember = false, CookieAwareWebClient c = null)
         {
             if(c == null)
