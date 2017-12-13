@@ -59,6 +59,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Web\Chatbox.cs" />
     <Compile Include="Web\LoginClient.cs" />
     <Compile Include="Web\PoniverseUser.cs" />
     <Compile Include="Program.cs" />

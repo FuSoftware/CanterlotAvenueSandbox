@@ -33,8 +33,14 @@ namespace CanterlotAvenue
 
             LoginClient l = new LoginClient();
             PoniverseUser u = l.Login(user, pass, false);
-            ServiceClient s = new ServiceClient(l.CookieWebClient);
-            s.SendStatus("If you can see this status, it means I've successfully automated both the login and status sending process ^^", ServiceClient.StatusPrivacy.Everyone);
+
+            //Service Client
+            //ServiceClient s = new ServiceClient(l.CookieWebClient);
+            //s.SendStatus("If you can see this status, it means I've successfully automated both the login and status sending process ^^", ServiceClient.StatusPrivacy.Everyone);
+
+            //Chatbox Client
+            Chatbox c = new Chatbox(l.CookieWebClient);
+            c.SendMessage("Mew, I C#");
 
             Console.WriteLine(u.Username);
         }
