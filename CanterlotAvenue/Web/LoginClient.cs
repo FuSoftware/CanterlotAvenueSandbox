@@ -55,18 +55,11 @@ namespace CanterlotAvenue.Web
         {
             if(c == null)
                 c = new CookieAwareWebClient();
-            /*
-            string s = c.DownloadString("https://poniverse.net");
-            Regex r = new Regex("token: \"(.+)\"");
-            Match m = r.Match(s);
-            return m.Groups[1].ToString();
-            */
 
             string s = c.DownloadString("https://poniverse.net/oauth/login");
             Regex r = new Regex("<input type=\\\"hidden\\\" name=\\\"_token\\\" value=\\\"(.+)\\\">");
             Match m = r.Match(s);
             return m.Groups[1].ToString();
-
         }
 
         public static string ExtractUser(string html)

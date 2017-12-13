@@ -55,23 +55,35 @@ namespace CanterlotAvenue.Web
             SendStatus(text, (int)privacy);
         }
 
-        public void SendStatus(string text, int privacy)
+        private static NameValueCollection GetAjaxFields()
         {
-            string token = GetOCore()["log.security_token"];
-
             NameValueCollection p = new NameValueCollection();
             p.Add("core[ajax]", "true");
-            p.Add("core[call]", "user.updateStatus");
-            p.Add("val[user_status]", text);
+            p.Add("core[call]", "");
+            p.Add("val[user_status]", "");
             p.Add("val[group_id]", "");
-            p.Add("val[action]", "upload_photo_via_share");
+            p.Add("val[action]", "");
             p.Add("image[]", "");
             p.Add("val[status_info]", "");
-            p.Add("val[privacy]", privacy.ToString());
+            p.Add("val[privacy]", "0");
             p.Add("core[security_token]", "0");
             p.Add("core[is_admincp]", "0");
             p.Add("core[is_user_profile]", "0");
             p.Add("core[profile_user_id]", "0");
+
+            return p;
+        }
+
+        public void SendStatus(string text, int privacy)
+        {
+            string token = GetOCore()["log.security_token"];
+
+            NameValueCollection p = GetAjaxFields();
+            p.Set("core[ajax]", "true");
+            p.Set("core[call]", "user.updateStatus");
+            p.Set("val[user_status]", text);
+            p.Set("val[action]", "upload_photo_via_share");
+            p.Set("val[privacy]", privacy.ToString());
 
             this.CookieClient.UploadValues("https://canterlotavenue.com/_ajax/", p);
         }
