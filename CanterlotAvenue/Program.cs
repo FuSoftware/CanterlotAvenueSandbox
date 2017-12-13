@@ -1,4 +1,4 @@
-﻿using CanterlotAvenue.Poniverse;
+﻿using CanterlotAvenue.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace CanterlotAvenue
             string user = Console.ReadLine();
             string pass = Console.ReadLine();
 
-            PoniverseUser u = PoniverseClient.Login(user, pass);
+            PoniverseUser u = LoginClient.Login(user, pass);
 
             Console.WriteLine(u.Username);
         }

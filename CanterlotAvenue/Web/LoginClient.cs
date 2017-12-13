@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Web;
 
-namespace CanterlotAvenue.Poniverse
+namespace CanterlotAvenue.Web
 {
-    class PoniverseClient
+    class LoginClient
     {
         private struct AuthData
         {
@@ -38,9 +36,19 @@ namespace CanterlotAvenue.Poniverse
             public string url;
         }
 
-        public PoniverseClient()
-        {
+        public CookieAwareWebClient CookieWebClient { get; }
 
+        public LoginClient(CookieAwareWebClient c = null)
+        {
+            if (c == null)
+                c = new CookieAwareWebClient();
+
+            this.CookieWebClient = c;
+        }
+
+        public PoniverseUser Login(string user, string pass, bool remember = false)
+        {
+            return Login(user, pass, remember, this.CookieWebClient);
         }
 
         public static string GetToken(CookieAwareWebClient c = null)
@@ -132,17 +140,12 @@ namespace CanterlotAvenue.Poniverse
             }
         }
 
-        private static void SendPonauthUrl(string url, CookieAwareWebClient c = null)
+        private static void SendPonauthUrl(string url, CookieAwareWebClient c)
         {
-            if (c == null)
-                c = new CookieAwareWebClient();
-
 
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
             wr.AllowAutoRedirect = false;
-
-            if (c != null)
-                wr.CookieContainer = c.CookieContainer;
+            wr.CookieContainer = c.CookieContainer;
 
             HttpWebResponse rsp = (HttpWebResponse)wr.GetResponse();
 
@@ -153,9 +156,11 @@ namespace CanterlotAvenue.Poniverse
             }
         }
 
-        public static PoniverseUser Login(string user, string pass, bool remember = false)
+        public static PoniverseUser Login(string user, string pass, bool remember = false, CookieAwareWebClient c = null)
         {
-            CookieAwareWebClient c = new CookieAwareWebClient();
+            if(c == null)
+                c = new CookieAwareWebClient();
+
             c.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.97 Safari/537.36 Vivaldi/1.94.1008.34");
             string result = "";
 
