@@ -21,6 +21,7 @@ namespace CanterlotAvenue.Web
             Custom
         }
 
+        long LastFeedUpdate = 0;
         private string SecurityToken = "";
         private CookieAwareWebClient CookieClient;
         
@@ -100,6 +101,32 @@ namespace CanterlotAvenue.Web
             p.Set("core[ajax]", "true");
             p.Set("core[call]", "friend.addRequest");
             p.Set("val[user_id]", UserID.ToString());
+            p.Set("core[security_token]", token);
+
+            this.CookieClient.UploadValues("https://canterlotavenue.com/_ajax/", p);
+        }
+
+        public void CheckFeedUpdate()
+        {
+            string token = SecurityToken;
+
+            NameValueCollection p = GetAjaxFields();
+            p.Set("core[ajax]", "true");
+            p.Set("core[call]", "feed.checkNew");
+            p.Set("iLastFeedUpdate", LastFeedUpdate.ToString());
+            p.Set("core[security_token]", token);
+
+            this.CookieClient.UploadValues("https://canterlotavenue.com/_ajax/", p);
+        }
+
+        public void GetFeedAfter()
+        {
+            string token = SecurityToken;
+
+            NameValueCollection p = GetAjaxFields();
+            p.Set("core[ajax]", "true");
+            p.Set("core[call]", "feed.loadNew");
+            p.Set("iLastFeedUpdate", LastFeedUpdate.ToString());
             p.Set("core[security_token]", token);
 
             this.CookieClient.UploadValues("https://canterlotavenue.com/_ajax/", p);
