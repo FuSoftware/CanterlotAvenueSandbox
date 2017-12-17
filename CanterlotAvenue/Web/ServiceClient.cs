@@ -21,6 +21,7 @@ namespace CanterlotAvenue.Web
             Custom
         }
 
+        private string SecurityToken = "";
         private CookieAwareWebClient CookieClient;
         
         public ServiceClient(CookieAwareWebClient c = null)
@@ -29,6 +30,11 @@ namespace CanterlotAvenue.Web
                 this.CookieClient = new CookieAwareWebClient();
             else
                 this.CookieClient = c;
+        }
+
+        public void UpdateSecurityToken()
+        {
+            SecurityToken = GetOCore()["log.security_token"];
         }
 
         private dynamic GetOCore()
@@ -60,12 +66,6 @@ namespace CanterlotAvenue.Web
             NameValueCollection p = new NameValueCollection();
             p.Add("core[ajax]", "true");
             p.Add("core[call]", "");
-            p.Add("val[user_status]", "");
-            p.Add("val[group_id]", "");
-            p.Add("val[action]", "");
-            p.Add("image[]", "");
-            p.Add("val[status_info]", "");
-            p.Add("val[privacy]", "0");
             p.Add("core[security_token]", "0");
             p.Add("core[is_admincp]", "0");
             p.Add("core[is_user_profile]", "0");
@@ -76,14 +76,31 @@ namespace CanterlotAvenue.Web
 
         public void SendStatus(string text, int privacy)
         {
-            string token = GetOCore()["log.security_token"];
+            string token = SecurityToken;
 
             NameValueCollection p = GetAjaxFields();
             p.Set("core[ajax]", "true");
             p.Set("core[call]", "user.updateStatus");
-            p.Set("val[user_status]", text);
-            p.Set("val[action]", "upload_photo_via_share");
-            p.Set("val[privacy]", privacy.ToString());
+            p.Add("val[group_id]", "");
+            p.Add("val[user_status]", text);
+            p.Add("val[status_info]", "");
+            p.Add("image[]", "");
+            p.Add("val[action]", "upload_photo_via_share");
+            p.Add("val[privacy]", privacy.ToString());
+            p.Set("core[security_token]", token);
+
+            this.CookieClient.UploadValues("https://canterlotavenue.com/_ajax/", p);
+        }
+
+        public void SendFriendInvite(int UserID)
+        {
+            string token = SecurityToken;
+
+            NameValueCollection p = GetAjaxFields();
+            p.Set("core[ajax]", "true");
+            p.Set("core[call]", "friend.addRequest");
+            p.Set("val[user_id]", UserID.ToString());
+            p.Set("core[security_token]", token);
 
             this.CookieClient.UploadValues("https://canterlotavenue.com/_ajax/", p);
         }

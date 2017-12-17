@@ -27,6 +27,8 @@ namespace CanterlotAvenue.Web
             p.Add("text", text);
             p.Add("parent_module_id", "index");
             p.Add("parent_item_id", "0");
+
+            CookieClient.UploadValues("https://canterlotavenue.com/PF.Site/Apps/core-shoutbox/polling.php", p);
         }
     }
 }

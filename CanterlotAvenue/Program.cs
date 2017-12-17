@@ -35,12 +35,17 @@ namespace CanterlotAvenue
             PoniverseUser u = l.Login(user, pass, false);
 
             //Service Client
-            //ServiceClient s = new ServiceClient(l.CookieWebClient);
+            ServiceClient s = new ServiceClient(l.CookieWebClient);
+            s.UpdateSecurityToken();
             //s.SendStatus("If you can see this status, it means I've successfully automated both the login and status sending process ^^", ServiceClient.StatusPrivacy.Everyone);
 
             //Chatbox Client
-            Chatbox c = new Chatbox(l.CookieWebClient);
-            c.SendMessage("Mew, I C#");
+            //Chatbox c = new Chatbox(l.CookieWebClient);
+            //c.SendMessage("Mew, I C#");
+
+            //Friends
+            int f = 0;
+            s.SendFriendInvite(f);
 
             Console.WriteLine(u.Username);
         }
