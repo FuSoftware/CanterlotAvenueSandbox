@@ -173,6 +173,19 @@ namespace CanterlotAvenue.Web
             }
         }
 
+        public static string SendLoginForm(string user, string pass, bool remember, string token, CookieAwareWebClient c)
+        {
+            byte[] res = c.UploadValues("https://poniverse.net/login", "POST", new NameValueCollection()
+            {
+                { "username", user },
+                { "password", pass },
+                { "rememberme", remember ? "1" : "0" },
+                { "submit", "" },
+                { "_token", token }
+            });
+            return Encoding.Default.GetString(res);
+        }
+
         /// <summary>
         /// Logs the user in CanterlotAvenue
         /// </summary>

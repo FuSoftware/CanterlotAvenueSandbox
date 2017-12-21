@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -33,10 +35,11 @@ namespace CanterlotAvenue
 
             LoginClient l = new LoginClient();
             PoniverseUser u = l.Login(user, pass, false);
+            Console.WriteLine("Logged in as user {0}", u.Id);
 
             //Service Client
             ServiceClient s = new ServiceClient(l.CookieWebClient);
-            s.UpdateSecurityToken();
+            //s.UpdateSecurityToken();
             //s.SendStatus("If you can see this status, it means I've successfully automated both the login and status sending process ^^", ServiceClient.StatusPrivacy.Everyone);
 
             //Chatbox Client
@@ -44,8 +47,8 @@ namespace CanterlotAvenue
             //c.SendMessage("Mew, I C#");
 
             //Friends
-            int f = 0;
-            s.SendFriendInvite(f);
+            //int f = 0;
+            //s.SendFriendInvite(f);
 
             Console.WriteLine(u.Username);
         }
